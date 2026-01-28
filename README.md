@@ -1,8 +1,6 @@
 # Introduction
 For any test statistic $T(X)$, a Besag-Clifford e-value is
-\begin{equation*}
-\hat E_M(X) = \frac{(M+1)T(X)}{T(X) + \sum_{m=1}^M T(Y^{(m)}) } 
-\end{equation*}
+$$\hat E_M(X) = \frac{(M+1)T(X)}{T(X) + \sum_{m=1}^M T(Y^{(m)}) }$$
 where $(X,Y^{(1)}, \dots, Y^{(M)})$ are sampled using the parallel algorithm of Besag and Clifford.
 This repository provides code to implement the experiments and applications in ``Besag-Clifford e-values for unnormalized testing."
 
