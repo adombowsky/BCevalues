@@ -3,8 +3,10 @@ For any test statistic $T(X)$, a Besag-Clifford e-value is
 $\hat E_M(X) = \frac{(M+1)T(X)}{T(X) + \sum_{m=1}^M T(Y^{(m)}) }$
 where $(X,Y^{(1)}, \dots, Y^{(M)})$ are sampled using the parallel algorithm of Besag and Clifford.
 This repository provides code to implement the experiments and applications in ``Besag-Clifford e-values for unnormalized testing."
+* R dependencies: ggplot2, latex2exp, cowplot, MCMCpack
+* Python dependencies: torch, numpy, pandas, random, jax, jax.numpy, blackjax
 
-## AR(1) Process
+## AR(1) process
 We test $H_0: \mathcal N(0,1)$ against $H_1: \mathcal N(\mu,1)$. The BC e-value is $\hat E_M(X) = \frac{(M+1)\exp(\mu x)}{\exp(\mu x) + \sum_{m=1}^M \exp(\mu Y^{(m)}) }.$
 
 * ```besag_clifford_ar1(dat,J,M,phi,tau)```
@@ -32,7 +34,7 @@ The BC e-value is constructed from $T(x_i) = \frac{e^{-\frac{(x_i-\mu)^2}{2}}}{\
 * ```sequential_product_of_t.R```
   * script to implement the simulation study in Section 6.2, creates figure 4
 
-## Sequential Composite Alternatives
+## Sequential composite alternatives
 The null is $\mathcal N(0,1)$ and the alternative is $\mathcal N(\mu, \sigma^2)$ for unknown $\mu$ and $\sigma^2$.
 The BC e-value is constructed from $T(x_t \mid x_{1:(t-1)}) = \frac{\mathcal N(x_t; \bar x_t, \hat \sigma_t^2)}{\mathcal N(x_t; 0, 1)}.$
 * ```grapa_obj(lambda, e_vals)```
@@ -41,3 +43,16 @@ The BC e-value is constructed from $T(x_t \mid x_{1:(t-1)}) = \frac{\mathcal N(x
   * ```e_vals```: vector of observed e-values
 * ```sequential_composite_normals.R```
   * script to implement the simulation study in Section 6.3, creates figure 5
+  
+## Application to Shapeley Supercluster data
+The Shapeley dataset is available on the website for Feigelson and Babu (2012). 
+* ```product_of_t.py``` 
+  * likelihood, score matching, and formatting functions
+* ```train_product_of_t.py``` 
+  * workflow to split data, train the PoE, and compute BC e-values
+  * cumulative sums of BC e-values are in 1D-array ```lbcevs```
+* ```score_matching_loss(x,params)```
+  * computes the score-matching loss for the PoE model
+  * ```x```: ```(p,)``` tensor, point that will be evaluated
+  * ```params```: list of W tuples, each is a triple ```(mu, Sigma, nu)``` of center, scale, and df
+  
