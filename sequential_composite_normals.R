@@ -1,5 +1,5 @@
 # functions
-source("composite_e_value.R")
+source("r/composite_e_value.R")
 
 # empirically adaptive e-process
 grapa_obj <- function(lambda, e_vals) {

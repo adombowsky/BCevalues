@@ -43,18 +43,26 @@ The BC e-value is constructed from $T(x_t \mid x_{1:(t-1)}) = \frac{\mathcal N(x
   * ```lambda```: weight, in (0,1)
   * ```e_vals```: vector of observed e-values
   
-## Application to Shapeley Supercluster data
-The Shapeley dataset is available on the website for Feigelson and Babu (2012). 
+## Shapley Supercluster
+The Shapley dataset is available on the website for Feigelson and Babu (2012). Suggested workflow:
 * ```product_of_t.py``` 
   * likelihood, score matching, and formatting functions
 * ```train_product_of_t.py``` 
-  * workflow to split data, train the PoE, and compute BC e-values
-  * cumulative sums of BC e-values are in 1D-array ```lbcevs```
+  * preprocess velocities, train the PoE, and compute BC e-values
+  * log BC e-values are in 1D-array ```lbcevs```, saved as ```lbcevs.csv```
+  * cumulative sum of log BC e-values are in 1-D array ```cumsum_lbcevs```, saved as ```cumsum_lbcevs.csv```
+* ```simulate_product_of_t.py```
+  * script to simulate from trained PoE models (null or alternative) with HMC
+  * use comments to either simulate from the null or alternative pre-trained model
+  * null and alternative samples saved to ```null_samps.csv``` and ```alt_samps.csv```
+* ```shapley_plot.R```
+  * plot the log-wealth of the Shapley velocities
+  * compare 
 * ```score_matching_loss(x,params)```
   * computes the score-matching loss for the PoE model
   * ```x```: ```(p,)``` tensor, point that will be evaluated
   * ```params```: list of W tuples, each is a triple ```(mu, Sigma, nu)``` of center, scale, and df
-    * ```mu``: ```(p,)``` tensor
+    * ```mu```: ```(p,)``` tensor
     * ```Sigma```: ```(p,p)``` tensor
     * ```df```: ```(1,)``` tensor
   
