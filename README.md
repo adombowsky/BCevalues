@@ -57,7 +57,7 @@ The Shapley dataset is available on the website for Feigelson and Babu (2012). S
   * null and alternative samples saved to ```null_samps.csv``` and ```alt_samps.csv```
 * ```shapley_plot.R```
   * plot the log-wealth of the Shapley velocities
-  * compare 
+  * compare null and alternative samples with observed data
 * ```score_matching_loss(x,params)```
   * computes the score-matching loss for the PoE model
   * ```x```: ```(p,)``` tensor, point that will be evaluated
