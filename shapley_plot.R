@@ -20,14 +20,16 @@ ggplot(shapley, aes(x=index,y=lbcev)) + geom_point(color="blue") +
 
 # comparing samples to data
 samps_null <- read.csv("null_samps.csv", header = F)
+samps_null <- c(samps_null$V1, samps_null$V2, samps_null$V3, samps_null$V4)
 samps_alt <- read.csv("alt_samps.csv", header=F)
+samps_alt <- c(samps_alt$V1,samps_alt$V2, samps_alt$V3, samps_alt$V4)
 X <- read.table("Shapley_galaxy.dat") # available online
 v <- as.numeric(X$V4[-1])
 v <- scale(v)
-comp_df <- data.frame(x = c(v[,1], samps_null$V1, samps_alt$V1),
+comp_df <- data.frame(x = c(v[,1], samps_null, samps_alt),
                       id = c(rep("Data",nrow(v)), 
-                             rep("Null Samples", nrow(samps_null)), 
-                             rep("Alternative Samples", nrow(samps_alt))))
+                             rep("Null Samples", length(samps_null)), 
+                             rep("Alternative Samples", length(samps_alt))))
 ggplot(comp_df, aes(x=x, group=id, color = id, fill=id)) + 
   geom_density(alpha=0.1) + 
   theme_bw() +
@@ -36,3 +38,4 @@ ggplot(comp_df, aes(x=x, group=id, color = id, fill=id)) +
   labs(title="Comparison of HMC Samples and Shapley Velocities",
        color="ID",
        fill="ID") # comparing null and alternative samples to data
+

@@ -35,9 +35,13 @@ def run_single_chain(initial_state, keys):
 
 # running the HMC sampler
 R = 10000 # number of simulations
-initial_state = hmc_setup.init(jnp.array(jax.random.normal(jax.random.PRNGKey(1),1))) # initialization
-rng_keys = jax.random.split(jax.random.PRNGKey(1),R) # random number seeds
-_, samps = run_single_chain(initial_state, rng_keys) # generating HMC samples
-np.savetxt('null_samps.csv', np.array(samps[0]), delimiter=',') # save null samples
-#np.savetxt('alt_samps.csv', np.array(samps[0]), delimiter=',') # save alternative samples
+S = 4 # number of chains
+poe_samps = np.zeros((R,S))
+for s in range(S):
+    initial_state = hmc_setup.init(jnp.array(jax.random.normal(jax.random.PRNGKey(s),1))) # initialization
+    rng_keys = jax.random.split(jax.random.PRNGKey(1),R) # random number seeds
+    _, samps = run_single_chain(initial_state, rng_keys) # generating HMC samples
+    poe_samps[:,s] = np.array(samps[0]).reshape(R)
+np.savetxt('null_samps.csv', poe_samps, delimiter=',') # save null samples
+#np.savetxt('alt_samps.csv', poe_samps, delimiter=',') # save null samples
 
