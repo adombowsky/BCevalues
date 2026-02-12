@@ -1,5 +1,5 @@
 # functions
-source("r/composite_e_value.R")
+source("composite_e_value.R")
 
 # empirically adaptive e-process
 grapa_obj <- function(lambda, e_vals) {
@@ -13,7 +13,7 @@ theta <- 1 # values of the alternative mean
 sigma <- 2
 #theta <- seq(-.5,0,by=0.025) # values of the null mean
 alpha <- 0.05 # significance level
-n <- 50 # sample size
+n <- 200 # sample size
 M <- 1000 # samples from the null
 U_samps <- LR_samps <- matrix(0,nrow=r,ncol=n)
 lambda_U <- lambda_LR <- 0 # betting strategy
@@ -80,9 +80,17 @@ plot_df <- data.frame(U_mean = U_mean,
 # initial plot
 logwealth <- ggplot(plot_df, aes(x=1:n,y=U_mean)) + geom_line(col="blue") + 
   ylab(TeX("$\\log \\hat{E}_t$")) + xlab("t") +
-  labs(title="Log Wealth of BC and LR E-Processes") +
+  labs(title="Log Wealth for 200 Timepoints") +
   geom_ribbon(aes(ymin=U_l,ymax=U_u),fill="blue",alpha=0.1) +
   geom_line(aes(x=1:n,y=LR_mean),col="red") + 
+  geom_ribbon(aes(ymin=LR_l,ymax=LR_u),fill="red",alpha=0.1) + 
+  geom_hline(yintercept = log(1/0.05),linetype="dashed") + theme_bw()
+# plot of only the first 50 time points
+logwealth_init <- ggplot(plot_df[1:50,], aes(x=1:50,y=U_mean)) + geom_line(col="blue") + 
+  ylab(TeX("$\\log \\hat{E}_t$")) + xlab("t") +
+  labs(title="Log Wealth for First 50 Timepoints") +
+  geom_ribbon(aes(ymin=U_l,ymax=U_u),fill="blue",alpha=0.1) +
+  geom_line(aes(x=1:50,y=LR_mean),col="red") + 
   geom_ribbon(aes(ymin=LR_l,ymax=LR_u),fill="red",alpha=0.1) + 
   geom_hline(yintercept = log(1/0.05),linetype="dashed") + theme_bw()
 # create legend
@@ -96,4 +104,5 @@ legend_plot <- ggplot(
   theme_void() +
   theme(legend.position = "right", text = element_text(size=13))
 leg <- get_legend(legend_plot)
-plot_grid(logwealth, leg, rel_widths = c(1, 0.15))
+plot_grid(logwealth_init,logwealth, leg, rel_widths = c(1, 1, 0.15),nrow=1)
+
